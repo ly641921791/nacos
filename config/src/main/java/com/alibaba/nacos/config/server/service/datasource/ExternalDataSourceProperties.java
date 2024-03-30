@@ -35,9 +35,13 @@ import static com.alibaba.nacos.common.utils.CollectionUtils.getOrDefault;
 public class ExternalDataSourceProperties {
     
     private static final String JDBC_DRIVER_NAME = "com.mysql.cj.jdbc.Driver";
-    
+
+    private static final String ORACLE_DRIVER_NAME = "oracle.jdbc.driver.OracleDriver";
+
     private static final String TEST_QUERY = "SELECT 1";
-    
+
+    private static final String ORACLE_TEST_QUERY = "SELECT 1 FROM DUAL";
+
     private Integer num;
     
     private List<String> url = new ArrayList<>();
@@ -80,14 +84,22 @@ public class ExternalDataSourceProperties {
             Preconditions.checkArgument(url.size() >= currentSize, "db.url.%s is null", index);
             DataSourcePoolProperties poolProperties = DataSourcePoolProperties.build(environment);
             if (StringUtils.isEmpty(poolProperties.getDataSource().getDriverClassName())) {
-                poolProperties.setDriverClassName(JDBC_DRIVER_NAME);
+                if (url.get(index).trim().contains("jdbc:oracle:thin:@")) {
+                    poolProperties.setDriverClassName(ORACLE_DRIVER_NAME);
+                }else {
+                    poolProperties.setDriverClassName(JDBC_DRIVER_NAME);
+                }
             }
             poolProperties.setJdbcUrl(url.get(index).trim());
             poolProperties.setUsername(getOrDefault(user, index, user.get(0)).trim());
             poolProperties.setPassword(getOrDefault(password, index, password.get(0)).trim());
             HikariDataSource ds = poolProperties.getDataSource();
             if (StringUtils.isEmpty(ds.getConnectionTestQuery())) {
-                ds.setConnectionTestQuery(TEST_QUERY);
+                if (url.get(index).trim().contains("jdbc:oracle:thin:@")) {
+                    ds.setConnectionTestQuery(ORACLE_TEST_QUERY);
+                } else {
+                    ds.setConnectionTestQuery(TEST_QUERY);
+                }
             }
             dataSources.add(ds);
             callback.accept(ds);

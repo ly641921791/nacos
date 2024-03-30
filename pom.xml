@@ -851,7 +851,13 @@
                 <artifactId>derby</artifactId>
                 <version>${derby.version}</version>
             </dependency>
-            
+
+            <dependency>
+                <groupId>com.oracle.ojdbc</groupId>
+                <artifactId>ojdbc8</artifactId>
+                <version>19.3.0.0</version>
+            </dependency>
+
             <!-- JRaft -->
             <dependency>
                 <groupId>com.alipay.sofa</groupId>
