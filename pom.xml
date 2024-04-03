@@ -837,7 +837,7 @@
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpasyncclient</artifactId>
                 <version>${httpasyncclient.version}</version>
-            </dependency>
+            </dependency>    
             
             <!-- JDBC libs -->
             <dependency>
