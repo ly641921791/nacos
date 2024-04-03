@@ -86,7 +86,7 @@ public class ExternalDataSourceProperties {
             if (StringUtils.isEmpty(poolProperties.getDataSource().getDriverClassName())) {
                 if (url.get(index).trim().contains("jdbc:oracle:thin:@")) {
                     poolProperties.setDriverClassName(ORACLE_DRIVER_NAME);
-                }else {
+                } else {
                     poolProperties.setDriverClassName(JDBC_DRIVER_NAME);
                 }
             }

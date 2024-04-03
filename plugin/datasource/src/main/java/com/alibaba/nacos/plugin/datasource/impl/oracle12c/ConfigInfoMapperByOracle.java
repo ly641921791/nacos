@@ -168,7 +168,8 @@ public class ConfigInfoMapperByOracle extends AbstractMapper implements ConfigIn
     
     @Override
     public String findConfigInfoBaseByGroupFetchRows(int startRow, int pageSize) {
-        return "SELECT id,data_id,group_id,content FROM config_info WHERE group_id=? AND tenant_id=?" + " OFFSET " + startRow + " ROWS FETCH NEXT " + pageSize + " ROWS ONLY";
+        return "SELECT id,data_id,group_id,content FROM config_info WHERE group_id=? AND tenant_id=?"
+                + " OFFSET " + startRow + " ROWS FETCH NEXT " + pageSize + " ROWS ONLY";
     }
     
     @Override
