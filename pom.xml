@@ -23,7 +23,7 @@
     <groupId>com.alibaba.nacos</groupId>
     <artifactId>nacos-all</artifactId>
     <version>${revision}</version>
-    <packaging>pom</packaging>
+    <packaging>pom</packaging> 
     
     <name>Alibaba NACOS ${project.version}</name>
     <description>Top Nacos project pom.xml file</description>
