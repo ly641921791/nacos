@@ -16,24 +16,42 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
-
-    runs-on: ubuntu-latest
-
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        java: [8, 8.0.192, 11, 11.0.3]
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up DB
-      uses: gvenzl/setup-oracle-free@v1
-      with:
-        oracle-database: test
-        app-user: test
-        app-user-password: test123456
-    - name: Set up JDK 8
-      uses: actions/setup-java@v3
-      with:
-        java-version: '8'
-        distribution: 'zulu'
-        architecture: x64
-        cache: maven
-    - name: Build with Maven
-      run: mvn clean test-compile failsafe:integration-test
+      - name: "Cache Maven Repos"
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+      - name: "Checkout"
+        uses: actions/checkout@v3
+      - name: Set up DB
+        uses: gvenzl/setup-oracle-free@v1
+        with:
+          oracle-database: test
+          app-user: test
+          app-user-password: test123456
+      - name: "Set up JDK ${{ matrix.java }}"
+        uses: actions/setup-java@v3
+        with:
+          java-version: ${{ matrix.java }}
+          distribution: 'zulu'
+          architecture: x64
+      - name: "Print maven version"
+        run: mvn -version
+      - name: "Test Config"
+        run: mvn clean package -Pcit-test -e -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+      - name: "Clean Env"
+        run: mvn clean -Premove-test-data -e -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+      - name: "Test Naming"
+        run: mvn clean package -Pnit-test -e -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+      - name: "Clean Env"
+        run: mvn clean -Premove-test-data -e -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+
