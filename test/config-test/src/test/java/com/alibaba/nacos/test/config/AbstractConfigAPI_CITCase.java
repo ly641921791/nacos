@@ -844,6 +844,38 @@ public abstract class AbstractConfigAPI_CITCase {
             Assert.fail();
         }
     }
+
+    /**
+     * @TCDescription : nacos_openAPI_模糊查询配置信息
+     * @TestStep : 1. 发布配置 2. 查询配置信息
+     * @ExpectResult : 获取查询到配置
+     * @author ly641921791
+     * @since (2.2.4,]
+     */
+    @Test(timeout = 5 * TIME_OUT)
+    public void nacos_openAPI_fuzzySearchConfig_2() {
+        HttpRestResult<String> result = null;
+
+        try {
+            final String content = "test123";
+            boolean ret = iconfig.publishConfig(dataId, group, content);
+            Thread.sleep(TIME_OUT);
+            Assert.assertTrue(ret);
+            Map<String, String> params = new HashMap<>();
+            params.put("dataId", "");
+            params.put("group", "");
+            params.put("pageNo", "1");
+            params.put("pageSize", "10");
+            params.put("search", "blur");
+            result = agent.httpGet(CONFIG_CONTROLLER_PATH + "/", null, params, agent.getEncode(), TIME_OUT);
+
+            Assert.assertEquals(HttpURLConnection.HTTP_OK, result.getCode());
+            Assert.assertTrue(JacksonUtils.toObj(result.getData()).get("totalCount").intValue() >= 1);
+
+        } catch (Exception e) {
+            Assert.fail();
+        }
+    }
     
     /**
      * @TCDescription : nacos_openAPI_查询配置信息
