@@ -25,8 +25,7 @@ jobs:
           ORACLE_DATABASE: test
           APP_USER: test
           APP_USER_PASSWORD: test123456
-          ORACLE_RANDOM_PASSWORD: no
-          ORACLE_PASSWORD: root
+          ORACLE_RANDOM_PASSWORD: yes
         ports:
           - 1521:1521
         options: >-
