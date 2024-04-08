@@ -31,7 +31,7 @@ import java.util.Map;
  * @author hyx
  **/
 
-public class ConfigInfoMapperByOracle extends AbstractMapper implements ConfigInfoMapper {
+public class ConfigInfoMapperByOracle extends AbstractOracleMapper implements ConfigInfoMapper {
     
     private static final String DATA_ID = "dataId";
     

@@ -26,7 +26,7 @@ import com.alibaba.nacos.plugin.datasource.mapper.HistoryConfigInfoMapper;
  * @author hyx
  **/
 
-public class HistoryConfigInfoMapperByOracle extends AbstractMapper implements HistoryConfigInfoMapper {
+public class HistoryConfigInfoMapperByOracle extends AbstractOracleMapper implements HistoryConfigInfoMapper {
     
     @Override
     public String removeConfigHistory() {

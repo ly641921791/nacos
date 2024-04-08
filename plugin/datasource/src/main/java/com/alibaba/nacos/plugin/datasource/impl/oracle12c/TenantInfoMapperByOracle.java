@@ -26,7 +26,7 @@ import com.alibaba.nacos.plugin.datasource.mapper.TenantInfoMapper;
  * @author hyx
  **/
 
-public class TenantInfoMapperByOracle extends AbstractMapper implements TenantInfoMapper {
+public class TenantInfoMapperByOracle extends AbstractOracleMapper implements TenantInfoMapper {
 
     @Override
     public String getDataSource() {

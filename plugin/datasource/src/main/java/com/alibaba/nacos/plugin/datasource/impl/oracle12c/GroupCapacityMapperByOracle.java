@@ -25,7 +25,7 @@ import com.alibaba.nacos.plugin.datasource.mapper.GroupCapacityMapper;
  *
  * @author lixiaoshuang
  */
-public class GroupCapacityMapperByOracle extends AbstractMapper implements GroupCapacityMapper {
+public class GroupCapacityMapperByOracle extends AbstractOracleMapper implements GroupCapacityMapper {
 
     @Override
     public String getDataSource() {

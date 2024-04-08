@@ -33,6 +33,18 @@ public interface Mapper {
      * @return The sql of select
      */
     String select(List<String> columns, List<String> where);
+
+    /**
+     * The select method contains columns and where params.
+     * Some sql need args to generate, eg: When arg is empty string, the sql should be "xxx IS NULL" in Oracle.
+     * @param columns The columns
+     * @param where The where params
+     * @param args The args for where param
+     * @return The sql of select
+     */
+    default String select(List<String> columns, List<String> where, Object[] args) {
+        return select(columns, where);
+    }
     
     /**
      * The insert method contains columns.

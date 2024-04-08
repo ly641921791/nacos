@@ -29,7 +29,7 @@ import java.util.Map;
  * @author hyx
  **/
 
-public class ConfigTagsRelationMapperByOracle extends AbstractMapper implements ConfigTagsRelationMapper {
+public class ConfigTagsRelationMapperByOracle extends AbstractOracleMapper implements ConfigTagsRelationMapper {
     
     @Override
     public String findConfigInfo4PageFetchRows(Map<String, String> params, int tagSize, int startRow, int pageSize) {

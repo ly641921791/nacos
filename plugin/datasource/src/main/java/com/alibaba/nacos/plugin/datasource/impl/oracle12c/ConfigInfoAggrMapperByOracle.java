@@ -25,7 +25,7 @@ import com.alibaba.nacos.plugin.datasource.mapper.ConfigInfoAggrMapper;
  *
  * @author hyx
  **/
-public class ConfigInfoAggrMapperByOracle extends AbstractMapper implements ConfigInfoAggrMapper {
+public class ConfigInfoAggrMapperByOracle extends AbstractOracleMapper implements ConfigInfoAggrMapper {
     
     @Override
     public String findConfigInfoAggrByPageFetchRows(int startRow, int pageSize) {

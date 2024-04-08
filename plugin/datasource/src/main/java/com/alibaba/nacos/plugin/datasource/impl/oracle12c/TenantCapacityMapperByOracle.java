@@ -26,7 +26,7 @@ import com.alibaba.nacos.plugin.datasource.mapper.TenantCapacityMapper;
  * @author hyx
  **/
 
-public class TenantCapacityMapperByOracle extends AbstractMapper implements TenantCapacityMapper {
+public class TenantCapacityMapperByOracle extends AbstractOracleMapper implements TenantCapacityMapper {
 
     @Override
     public String getDataSource() {

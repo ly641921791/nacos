@@ -26,7 +26,7 @@ import com.alibaba.nacos.plugin.datasource.mapper.ConfigInfoBetaMapper;
  * @author hyx
  **/
 
-public class ConfigInfoBetaMapperByOracle extends AbstractMapper implements ConfigInfoBetaMapper {
+public class ConfigInfoBetaMapperByOracle extends AbstractOracleMapper implements ConfigInfoBetaMapper {
 
     @Override
     public String findAllConfigInfoBetaForDumpAllFetchRows(int startRow, int pageSize) {

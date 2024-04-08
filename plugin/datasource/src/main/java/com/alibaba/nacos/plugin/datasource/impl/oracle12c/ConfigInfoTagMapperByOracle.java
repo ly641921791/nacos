@@ -26,7 +26,7 @@ import com.alibaba.nacos.plugin.datasource.mapper.ConfigInfoTagMapper;
  * @author hyx
  **/
 
-public class ConfigInfoTagMapperByOracle extends AbstractMapper implements ConfigInfoTagMapper {
+public class ConfigInfoTagMapperByOracle extends AbstractOracleMapper implements ConfigInfoTagMapper {
 
     @Override
     public String findAllConfigInfoTagForDumpAllFetchRows(int startRow, int pageSize) {
