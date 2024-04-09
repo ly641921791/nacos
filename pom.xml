@@ -156,6 +156,7 @@
         <jraft-core.version>1.3.12</jraft-core.version>
         <rpc-grpc-impl.version>${jraft-core.version}</rpc-grpc-impl.version>
         <SnakeYaml.version>2.0</SnakeYaml.version>
+        <mybatis-flex.version>1.8.6</mybatis-flex.version>
     </properties>
     <!-- == -->
     <!-- =========================================================Build plugins================================================ -->
@@ -1010,6 +1011,11 @@
                 <groupId>org.yaml</groupId>
                 <artifactId>snakeyaml</artifactId>
                 <version>${SnakeYaml.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.mybatis-flex</groupId>
+                <artifactId>mybatis-flex-spring</artifactId>
+                <version>${mybatis-flex.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
