@@ -33,6 +33,55 @@ public class MybatisFlexUtils {
     }
 
     /**
+     * concat =.
+     *
+     * @param queryChain queryChain
+     * @param column     column
+     * @param value      value
+     * @param <T>        T
+     */
+    public static <T> void concatEq(QueryWrapper queryChain, LambdaGetter<T> column, Object value) {
+        queryChain.eq(column, value);
+    }
+
+    /**
+     * concat !=.
+     *
+     * @param queryChain queryChain
+     * @param column     column
+     * @param value      value
+     * @param <T>        T
+     */
+    public static <T> void concatNotEq(QueryWrapper queryChain, LambdaGetter<T> column, String value) {
+        // Oracle 中插入"" 变成 null，因此当 value 输入 "" 时，需要通过 is bull 去判断
+        // "     " 不存在这种问题
+        if (StringUtils.isEmpty(value)) {
+            queryChain.isNotNull(column);
+        } else {
+            queryChain.ne(column, value);
+        }
+    }
+
+    /**
+     * concat =.
+     *
+     * @param queryChain queryChain
+     * @param column     column
+     * @param value      value
+     * @param <T>        T
+     */
+    public static <T> void concatLike(QueryWrapper queryChain, LambdaGetter<T> column, String value) {
+        // Oracle 中插入"" 变成 null，因此当 value 输入 "" 时，需要通过 is bull 去判断
+        // "     " 不存在这种问题
+        if (StringUtils.isEmpty(value)) {
+            queryChain.isNull(column);
+        } else {
+            // TODO 处理*
+            queryChain.like(column, value);
+        }
+    }
+
+    /**
      * concat in.
      *
      * @param queryChain queryChain
