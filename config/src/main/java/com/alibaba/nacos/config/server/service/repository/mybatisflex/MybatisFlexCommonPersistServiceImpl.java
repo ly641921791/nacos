@@ -1,6 +1,5 @@
 package com.alibaba.nacos.config.server.service.repository.mybatisflex;
 
-import com.alibaba.nacos.common.utils.StringUtils;
 import com.alibaba.nacos.config.server.configuration.ConditionOnExternalStorage;
 import com.alibaba.nacos.config.server.model.TenantInfo;
 import com.alibaba.nacos.config.server.service.repository.CommonPersistService;
@@ -9,8 +8,6 @@ import com.alibaba.nacos.config.server.service.repository.mybatisflex.mapper.Ten
 import com.alibaba.nacos.config.server.utils.LogUtil;
 import com.mybatisflex.core.query.QueryChain;
 import com.mybatisflex.core.query.QueryWrapper;
-import com.mybatisflex.core.util.LambdaGetter;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.dao.DataAccessException;
@@ -22,7 +19,8 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
+
+import static com.alibaba.nacos.config.server.service.repository.mybatisflex.MybatisFlexUtils.concatEq;
 
 /**
  * ExternalOtherPersistServiceImpl.
@@ -94,11 +92,7 @@ public class MybatisFlexCommonPersistServiceImpl implements CommonPersistService
         QueryWrapper queryWrapper = QueryWrapper.create().select(TenantInfoEntity::getTenantId).select(TenantInfoEntity::getTenantName).select(TenantInfoEntity::getTenantDesc);
         concatEq(queryWrapper, TenantInfoEntity::getKp, kp);
         try {
-            return tenantInfoEntityMapper.selectListByQuery(queryWrapper).stream().map(tenantInfoEntity -> {
-                TenantInfo tenantInfo = new TenantInfo();
-                BeanUtils.copyProperties(tenantInfoEntity, tenantInfo);
-                return tenantInfo;
-            }).collect(Collectors.toList());
+            return tenantInfoEntityMapper.selectListByQueryAs(queryWrapper, TenantInfo.class);
         } catch (CannotGetJdbcConnectionException e) {
             LogUtil.FATAL_LOG.error("[db-error] " + e, e);
             throw e;
@@ -116,10 +110,7 @@ public class MybatisFlexCommonPersistServiceImpl implements CommonPersistService
         concatEq(queryWrapper, TenantInfoEntity::getKp, kp);
         concatEq(queryWrapper, TenantInfoEntity::getTenantId, tenantId);
         try {
-            TenantInfoEntity tenantInfoEntity = tenantInfoEntityMapper.selectOneByQuery(queryWrapper);
-            TenantInfo tenantInfo = new TenantInfo();
-            BeanUtils.copyProperties(tenantInfoEntity, tenantInfo);
-            return tenantInfo;
+            return tenantInfoEntityMapper.selectOneByQueryAs(queryWrapper, TenantInfo.class);
         } catch (CannotGetJdbcConnectionException e) {
             LogUtil.FATAL_LOG.error("[db-error] " + e, e);
             throw e;
@@ -162,18 +153,6 @@ public class MybatisFlexCommonPersistServiceImpl implements CommonPersistService
         QueryWrapper queryWrapper = QueryWrapper.create();
         concatEq(queryWrapper, TenantInfoEntity::getTenantId, tenantId);
         return (int) tenantInfoEntityMapper.selectCountByQuery(queryWrapper);
-    }
-
-    private <T> void concatEq(QueryWrapper queryChain, LambdaGetter<T> column, String value) {
-        if (StringUtils.isBlank(value)) {
-            queryChain.isNull(column);
-        } else {
-            queryChain.eq(column, value);
-        }
-    }
-
-    private <R, T> void concatEq(QueryChain<R> queryChain, LambdaGetter<T> column, String value) {
-        concatEq((QueryWrapper) queryChain, column, value);
     }
 
 }
