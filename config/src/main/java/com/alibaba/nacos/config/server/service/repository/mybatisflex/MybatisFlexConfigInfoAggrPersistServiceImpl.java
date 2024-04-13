@@ -32,7 +32,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import static com.alibaba.nacos.api.common.Constants.GROUP;
 import static com.alibaba.nacos.config.server.service.repository.mybatisflex.MybatisFlexUtils.*;
+import static com.alibaba.nacos.plugin.datasource.mapper.ConfigInfoMapper.TENANT;
 
 /**
  * ExternalConfigInfoAggrPersistServiceImpl.
@@ -262,7 +264,14 @@ public class MybatisFlexConfigInfoAggrPersistServiceImpl implements ConfigInfoAg
     public ConfigInfoAggr findSingleConfigInfoAggr(String dataId, String group, String tenant, String datumId) {
         String tenantTmp = StringUtils.isBlank(tenant) ? StringUtils.EMPTY : tenant;
 
-        QueryWrapper queryWrapper = QueryWrapper.create().select(ConfigInfoAggrEntity::getId).select(ConfigInfoAggrEntity::getDataId).select(ConfigInfoAggrEntity::getGroupId).select(ConfigInfoAggrEntity::getTenantId).select(ConfigInfoAggrEntity::getDatumId).select(ConfigInfoAggrEntity::getAppName).select(ConfigInfoAggrEntity::getContent);
+        QueryWrapper queryWrapper = QueryWrapper.create()
+                .select(ConfigInfoAggrEntity::getId)
+                .select(ConfigInfoAggrEntity::getDataId)
+                .select(ConfigInfoAggrEntity::getGroupId).as(GROUP)
+                .select(ConfigInfoAggrEntity::getTenantId).as(TENANT)
+                .select(ConfigInfoAggrEntity::getDatumId)
+                .select(ConfigInfoAggrEntity::getAppName)
+                .select(ConfigInfoAggrEntity::getContent);
         concatEq(queryWrapper, ConfigInfoAggrEntity::getDataId, dataId);
         concatEq(queryWrapper, ConfigInfoAggrEntity::getGroupId, group);
         concatEq(queryWrapper, ConfigInfoAggrEntity::getTenantId, tenantTmp);
@@ -286,7 +295,13 @@ public class MybatisFlexConfigInfoAggrPersistServiceImpl implements ConfigInfoAg
     public List<ConfigInfoAggr> findConfigInfoAggr(String dataId, String group, String tenant) {
         String tenantTmp = StringUtils.isBlank(tenant) ? StringUtils.EMPTY : tenant;
 
-        QueryWrapper queryWrapper = QueryWrapper.create().select(ConfigInfoAggrEntity::getDataId).select(ConfigInfoAggrEntity::getGroupId).select(ConfigInfoAggrEntity::getTenantId).select(ConfigInfoAggrEntity::getDatumId).select(ConfigInfoAggrEntity::getAppName).select(ConfigInfoAggrEntity::getContent);
+        QueryWrapper queryWrapper = QueryWrapper.create()
+                .select(ConfigInfoAggrEntity::getDataId)
+                .select(ConfigInfoAggrEntity::getGroupId).as(GROUP)
+                .select(ConfigInfoAggrEntity::getTenantId).as(TENANT)
+                .select(ConfigInfoAggrEntity::getDatumId)
+                .select(ConfigInfoAggrEntity::getAppName)
+                .select(ConfigInfoAggrEntity::getContent);
         concatEq(queryWrapper, ConfigInfoAggrEntity::getDataId, dataId);
         concatEq(queryWrapper, ConfigInfoAggrEntity::getGroupId, group);
         concatEq(queryWrapper, ConfigInfoAggrEntity::getTenantId, tenantTmp);
@@ -309,7 +324,13 @@ public class MybatisFlexConfigInfoAggrPersistServiceImpl implements ConfigInfoAg
     public Page<ConfigInfoAggr> findConfigInfoAggrByPage(String dataId, String group, String tenant, final int pageNo, final int pageSize) {
         String tenantTmp = StringUtils.isBlank(tenant) ? StringUtils.EMPTY : tenant;
 
-        QueryWrapper queryWrapper = QueryWrapper.create().select(ConfigInfoAggrEntity::getDataId).select(ConfigInfoAggrEntity::getGroupId).select(ConfigInfoAggrEntity::getTenantId).select(ConfigInfoAggrEntity::getDatumId).select(ConfigInfoAggrEntity::getAppName).select(ConfigInfoAggrEntity::getContent);
+        QueryWrapper queryWrapper = QueryWrapper.create()
+                .select(ConfigInfoAggrEntity::getDataId)
+                .select(ConfigInfoAggrEntity::getGroupId).as(GROUP)
+                .select(ConfigInfoAggrEntity::getTenantId).as(TENANT)
+                .select(ConfigInfoAggrEntity::getDatumId)
+                .select(ConfigInfoAggrEntity::getAppName)
+                .select(ConfigInfoAggrEntity::getContent);
         concatEq(queryWrapper, ConfigInfoAggrEntity::getDataId, dataId);
         concatEq(queryWrapper, ConfigInfoAggrEntity::getGroupId, group);
         concatEq(queryWrapper, ConfigInfoAggrEntity::getTenantId, tenantTmp);
@@ -331,7 +352,13 @@ public class MybatisFlexConfigInfoAggrPersistServiceImpl implements ConfigInfoAg
             return page;
         }
 
-        QueryChain<ConfigInfoAggrEntity> queryChain = QueryChain.of(ConfigInfoAggrEntity.class).select(ConfigInfoAggrEntity::getDataId).select(ConfigInfoAggrEntity::getGroupId).select(ConfigInfoAggrEntity::getTenantId).select(ConfigInfoAggrEntity::getDatumId).select(ConfigInfoAggrEntity::getAppName).select(ConfigInfoAggrEntity::getContent);
+        QueryChain<ConfigInfoAggrEntity> queryChain = QueryChain.of(ConfigInfoAggrEntity.class)
+                .select(ConfigInfoAggrEntity::getDataId)
+                .select(ConfigInfoAggrEntity::getGroupId).as(GROUP)
+                .select(ConfigInfoAggrEntity::getTenantId).as(TENANT)
+                .select(ConfigInfoAggrEntity::getDatumId)
+                .select(ConfigInfoAggrEntity::getAppName)
+                .select(ConfigInfoAggrEntity::getContent);
 
         for (ConfigKey configInfoAggr : configKeys) {
             String dataId = configInfoAggr.getDataId();
@@ -377,7 +404,10 @@ public class MybatisFlexConfigInfoAggrPersistServiceImpl implements ConfigInfoAg
 
     @Override
     public List<ConfigInfoChanged> findAllAggrGroup() {
-        QueryWrapper queryWrapper = QueryChain.of(ConfigInfoAggrEntity.class).select(QueryMethods.distinct(ConfigInfoAggrEntity::getDataId)).select(ConfigInfoAggrEntity::getGroupId).select(ConfigInfoAggrEntity::getTenantId);
+        QueryWrapper queryWrapper = QueryChain.of(ConfigInfoAggrEntity.class)
+                .select(QueryMethods.distinct(ConfigInfoAggrEntity::getDataId))
+                .select(ConfigInfoAggrEntity::getGroupId).as(GROUP)
+                .select(ConfigInfoAggrEntity::getTenantId).as(TENANT);
         try {
             return configInfoAggrEntityMapper.selectListByQueryAs(queryWrapper, ConfigInfoChanged.class);
         } catch (CannotGetJdbcConnectionException e) {

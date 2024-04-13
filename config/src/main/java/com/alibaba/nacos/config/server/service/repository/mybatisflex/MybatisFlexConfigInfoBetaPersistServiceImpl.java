@@ -27,8 +27,10 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
+import static com.alibaba.nacos.api.common.Constants.GROUP;
 import static com.alibaba.nacos.config.server.service.repository.mybatisflex.MybatisFlexUtils.concatEq;
 import static com.alibaba.nacos.config.server.service.repository.mybatisflex.MybatisFlexUtils.convertPage;
+import static com.alibaba.nacos.plugin.datasource.mapper.ConfigInfoMapper.TENANT;
 
 /**
  * ExternalConfigInfoBetaPersistServiceImpl.
@@ -193,8 +195,8 @@ public class MybatisFlexConfigInfoBetaPersistServiceImpl implements ConfigInfoBe
             QueryWrapper queryWrapper = QueryWrapper.create()
                     .select(ConfigInfoBetaEntity::getId)
                     .select(ConfigInfoBetaEntity::getDataId)
-                    .select(ConfigInfoBetaEntity::getGroupId)
-                    .select(ConfigInfoBetaEntity::getTenantId)
+                    .select(ConfigInfoBetaEntity::getGroupId).as(GROUP)
+                    .select(ConfigInfoBetaEntity::getTenantId).as(TENANT)
                     .select(ConfigInfoBetaEntity::getAppName)
                     .select(ConfigInfoBetaEntity::getContent)
                     .select(ConfigInfoBetaEntity::getBetaIps)
