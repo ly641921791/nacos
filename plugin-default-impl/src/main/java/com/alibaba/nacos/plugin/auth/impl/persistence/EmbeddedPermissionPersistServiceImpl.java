@@ -18,6 +18,7 @@ package com.alibaba.nacos.plugin.auth.impl.persistence;
 
 import com.alibaba.nacos.common.utils.StringUtils;
 import com.alibaba.nacos.config.server.configuration.ConditionOnEmbeddedStorage;
+import com.alibaba.nacos.config.server.configuration.ConditionalOnUseOrm;
 import com.alibaba.nacos.config.server.model.Page;
 import com.alibaba.nacos.config.server.service.repository.PaginationHelper;
 import com.alibaba.nacos.config.server.service.repository.embedded.DatabaseOperate;
@@ -40,6 +41,7 @@ import static com.alibaba.nacos.plugin.auth.impl.persistence.AuthRowMapperManage
  */
 @Conditional(value = ConditionOnEmbeddedStorage.class)
 @Component
+@ConditionalOnUseOrm("no")
 public class EmbeddedPermissionPersistServiceImpl implements PermissionPersistService {
     
     @Autowired

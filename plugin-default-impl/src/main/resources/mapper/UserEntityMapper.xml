@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.alibaba.nacos.plugin.auth.impl.mapper.UserEntityMapper">
+
+    <select id="findUserByUsername" resultType="com.alibaba.nacos.plugin.auth.impl.persistence.User">
+        SELECT username,password FROM users WHERE username = #{username}
+    </select>
+
+    <select id="getUsers" resultType="com.alibaba.nacos.plugin.auth.impl.persistence.User">
+        SELECT username,password FROM users
+        <where>
+            <if test="@org.apache.commons.lang.StringUtils@isNotBlank(username)">
+                AND username = #{username}
+            </if>
+        </where>
+    </select>
+
+    <select id="findUserLikeUsername" resultType="java.lang.String">
+        SELECT username FROM users WHERE username LIKE #{username}
+    </select>
+
+    <select id="findUsersLike" resultType="com.alibaba.nacos.plugin.auth.impl.persistence.User">
+        SELECT username,password FROM users
+        <where>
+            <if test="@org.apache.commons.lang.StringUtils@isNotBlank(username)">
+                AND username LIKE #{username}
+            </if>
+        </where>
+    </select>
+
+</mapper>

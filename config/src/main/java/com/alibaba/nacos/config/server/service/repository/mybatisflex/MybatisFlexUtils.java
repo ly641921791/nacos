@@ -129,4 +129,20 @@ public class MybatisFlexUtils {
         return page;
     }
 
+    /**
+     * Mybatis Flex Page -> Nacos Page
+     *
+     * @param pageInfo Page
+     * @param <T>      T
+     * @return Page
+     */
+    public static <T> Page<T> convertPage(com.github.pagehelper.Page<T> pageInfo) {
+        Page<T> page = new Page<>();
+        page.setTotalCount((int) pageInfo.getTotal());
+        page.setPageNumber(pageInfo.getPageNum());
+        page.setPagesAvailable(pageInfo.getPages());
+        page.setPageItems(pageInfo.getResult());
+        return page;
+    }
+
 }

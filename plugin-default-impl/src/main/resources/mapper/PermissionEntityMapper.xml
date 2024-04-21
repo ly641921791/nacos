@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.alibaba.nacos.plugin.auth.impl.mapper.PermissionEntityMapper">
+
+    <select id="getPermissions" resultType="com.alibaba.nacos.plugin.auth.impl.persistence.PermissionInfo">
+        SELECT role,resource,action FROM permissions
+        <where>
+            <if test="@org.apache.commons.lang.StringUtils@isNotBlank(role)">
+                AND role = #{role}
+            </if>
+        </where>
+    </select>
+
+    <delete id="deletePermission">
+        DELETE FROM permissions WHERE role = #{role} AND resource = #{resource} AND action = #{action}
+    </delete>
+
+    <select id="findPermissionsLike"
+            resultType="com.alibaba.nacos.plugin.auth.impl.persistence.PermissionInfo">
+        SELECT role,resource,action FROM permissions
+        <where>
+            <if test="@org.apache.commons.lang.StringUtils@isNotBlank(role)">
+                AND role LIKE #{role}
+            </if>
+        </where>
+    </select>
+
+</mapper>

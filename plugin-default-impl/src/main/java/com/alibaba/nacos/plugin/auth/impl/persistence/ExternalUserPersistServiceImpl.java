@@ -18,6 +18,7 @@ package com.alibaba.nacos.plugin.auth.impl.persistence;
 
 import com.alibaba.nacos.common.utils.StringUtils;
 import com.alibaba.nacos.config.server.configuration.ConditionOnExternalStorage;
+import com.alibaba.nacos.config.server.configuration.ConditionalOnUseOrm;
 import com.alibaba.nacos.config.server.model.Page;
 import com.alibaba.nacos.config.server.service.repository.PaginationHelper;
 import com.alibaba.nacos.config.server.service.repository.extrnal.ExternalStoragePersistServiceImpl;
@@ -42,6 +43,7 @@ import static com.alibaba.nacos.plugin.auth.impl.persistence.AuthRowMapperManage
  */
 @Conditional(value = ConditionOnExternalStorage.class)
 @Component
+@ConditionalOnUseOrm("no")
 public class ExternalUserPersistServiceImpl implements UserPersistService {
     
     @Autowired
